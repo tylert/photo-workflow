@@ -1,0 +1,70 @@
+#!/usr/bin/perl
+# -.-. --- .--. -.-- .-. .. --. .... -  ..--- ----- ----- --...
+# - -.-- .-.. . .-.  - .. -.. -- .- -.  --..--  ...- .- ...-- -.. --. -.
+
+# apt-get install libyaml-tiny-perl imagemagick
+
+use Getopt::Long;
+use YAML::Tiny;
+use POSIX qw[floor ceil];
+use List::Util qw[min max];
+
+my $conf = "$ENV{HOME}/.stampphoto.yaml";
+GetOptions(
+  "conf=s" => \$conf,
+  #"verbose!" => \$verbose, # --verbose => 1, --noverbose => 0
+  #"foo" => sub { bark; },
+);
+
+#if ("$year" eq "") { $year = `date +%Y`; chomp $year; }
+#if ("$owner" eq "") { $owner = "Tyler Tidman"; }
+#if ("$gravity" eq "") { $gravity = "bottom"; }
+#if ("$string" eq "") { $string = "©$year $owner"; }
+
+my $yaml         = YAML::Tiny->read($conf);
+my $label        = $yaml->[0]->{settings}->{label}        || "©2008 Tyler Tidman";
+my $font         = $yaml->[0]->{settings}->{font}         || "/usr/share/fonts/truetype/arphic/uming.ttc";
+my $scalefactor  = $yaml->[0]->{settings}->{scalefactor}  || "0.01";
+my $framecolour  = $yaml->[0]->{settings}->{framecolour}  || "black";
+my $strokecolour = $yaml->[0]->{settings}->{strokecolour} || "white";
+my $fillcolour   = $yaml->[0]->{settings}->{fillcolour}   || "black";
+
+my $infile = shift;
+my $frmfile = $infile;
+my $mrkfile = $infile;
+my $outfile = $infile;
+$frmfile =~ s/\./\.frm\./;
+$mrkfile =~ s/\./\.mrk\./;
+$outfile =~ s/\./\.out\./;
+
+my $geom1 = `identify '$infile'`;
+$geom1 =~ /(\d+)x(\d+)/;
+my $x1 = $1;
+my $y1 = $2;
+
+if ($x1 <= $y1) { print "Image '$infile' has portrait orientation (x = $x1, y = $y1)\n"; }
+else            { print "Image '$infile' has landscape orientation (x = $x1, y = $y1)\n"; }
+
+my $fontsize = floor(min($x1, $y1) * $scalefactor);
+
+`convert -background $framecolour -font $font -pointsize $fontsize -fill $fillcolour -stroke $strokecolour label:'$label' '$mrkfile'`;
+
+my $geom2 = `identify '$mrkfile'`;
+$geom2 =~ /(\d+)x(\d+)/;
+my $x2 = $1;
+my $y2 = $2;
+
+print "Generated hallmark '$mrkfile' at fontsize '$fontsize' (x = $x2, y = $y2)\n";
+
+my $frame = "";
+if ($x1 <= $y1) { $frame = ($y2 * 2 + 10) . "x" . $y2 . "+3+3"; }
+else            { $frame = $y2 . "x" . ($y2 * 2 + 10) . "+3+3"; }
+
+`convert '$infile' -mattecolor $framecolour -frame $frame '$frmfile'`;
+
+my $geom3 = `identify '$frmfile'`;
+$geom3 =~ /(\d+)x(\d+)/;
+my $x3 = $1;
+my $y3 = $2;
+
+print "Generated framed image '$frmfile' with frame '$frame' (x = $x3, y = $y3)\n";

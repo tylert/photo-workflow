@@ -1,0 +1,15 @@
+#!/usr/bin/perl
+
+my $filename = shift;
+
+my ($dev, $ino, $mode, $nlink, $uid, $gid, $rdev,
+  $size, $atime, $mtime, $ctime, $blksize, $blocks)
+    = stat($filename);
+
+my $fulltime = localtime $ctime;
+my $othertime = gmtime $ctime;
+
+my ($sec, $min, $hour, $day, $mon, $year, $wday, $yday, $isdst)
+  = localtime $ctime;
+
+print $fulltime, "\n", $othertime, "\n";

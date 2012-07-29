@@ -1,0 +1,8 @@
+#!/bin/bash
+for i in *.nef
+do
+  if [ ! -e ${i/nef/jpg} ]
+  then
+    rm -v $i
+  fi
+done
