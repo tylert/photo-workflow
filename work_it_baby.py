@@ -1,5 +1,10 @@
 #!/usr/bin/python
 
+import os
+import glob
+
+import pyexiv2
+
 #for i in ${*}
 #do
 #  type=`exifprobe ${i} | grep "^File" | grep Type`
