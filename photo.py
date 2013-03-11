@@ -1,29 +1,45 @@
 import pyexiv2
 import sys
+import os
 #import datetime
 
+oldfilename = sys.argv[1]
+oldextension = os.path.splitext(oldfilename)[-1]
+
+# Try to find the exif header.
 try:
-  metadata = pyexiv2.ImageMetadata(sys.argv[1])
+  metadata = pyexiv2.ImageMetadata(oldfilename)
   metadata.read()
 except:
-  sys.exit('No valid exif header found.')
+  sys.exit('Unable to find a valid exif header.')
 
+# Extract the timestamp to use as a filename.
 try:
-  name = metadata['Exif.Photo.DateTimeDigitized'].value.strftime('%Y-%m-%d-%H-%M-%S')
+  newbasename = metadata['Exif.Photo.DateTimeDigitized'].value.strftime('%Y-%m-%d-%H-%M-%S')
 except:
   try:
-    name = metadata['Exif.Image.DateTime'].value.strftime('%Y-%m-%d-%H-%M-%S')
+    newbasename = metadata['Exif.Image.DateTime'].value.strftime('%Y-%m-%d-%H-%M-%S')
   except:
-    sys.exit('No valid date time found.')
+    sys.exit('Unable to find a valid exif timestamp.')
 
 try:
-  with open(name + '.exif', 'w') as exiffile:
-    exiffile.write('{}\n'.format(metadata.mime_type))
+  if metadata.mime_type == 'image/x-nikon-nef':
+    newextension = 'nef'
+  #else if metadata.mime_type == 'image/jpeg':
+  else:
+    newextension = 'jpg'
+except:
+  sys.exit('Unable to determine image type from header.')
 
+# Output all the exif fields as text.
+try:
+  newfilename = newbasename + '.' + newextension
+
+  with open(newfilename + '.exif', 'w') as exiffile:
     for key in sorted(metadata.exif_keys):
       exiffile.write('{} = \'{}\'\n'.format(key, metadata[key].human_value))
 except:
-  sys.exit('Unable to open exif text file for writing.')
+  sys.exit('Unable to open text file for writing.')
 
 
 #if __name__ == '__main__':
