@@ -1,11 +1,12 @@
 #!/usr/bin/python
 
-# python-pyexiv2
-# python-magic (may need to use file instead)
+# debian packages used:
+#   python-pyexiv2
+#   python-magic (may need to use file instead)
 
 
-def wow(old_photo_filename):
-  '''Poop'''
+def rename_photo_and_dump_exif(old_photo_filename):
+  '''Extract info from the exif header to rename the file and move it'''
 
   import pyexiv2
   import sys
@@ -100,7 +101,7 @@ def wow(old_photo_filename):
 if __name__ == '__main__':
   import sys
 
-  wow(sys.argv[1])
+  rename_photo_and_dump_exif(sys.argv[1])
 
 
 #nice -n5 ufraw-batch --out-type=jpeg --overwrite */*.nef
