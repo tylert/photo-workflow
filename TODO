@@ -1,0 +1,4 @@
+Improve the handling of renames if multiple shots land in the same second
+Wrap main rename function inside a class
+Add the logic to fix embedded thumbnail images
+Try to verify if it can process Canon raw files properly
