@@ -73,15 +73,15 @@ def rename_photo_and_dump_exif(old_photo_filename):
   # Move the photo into the correct album.
   try:
     if not os.path.exists(new_photo_filename):
-      os.renames(old_photo_filename, new_photo_filename)
+      shutil.move(old_photo_filename, new_photo_filename)
     else:
       new_photo_filename = new_photo_basename + 'a' + new_photo_extension
       if not os.path.exists(new_photo_filename):
-        os.renames(old_photo_filename, new_photo_filename)
+        shutil.move(old_photo_filename, new_photo_filename)
       else:
         new_photo_filename = new_photo_basename + 'b' + new_photo_extension
         if not os.path.exists(new_photo_filename):
-          os.renames(old_photo_filename, new_photo_filename)
+          shutil.move(old_photo_filename, new_photo_filename)
         else:
           sys.exit('Unable to rename {}'.format(old_photo_filename))
   except:
