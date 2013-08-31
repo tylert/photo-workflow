@@ -4,14 +4,15 @@
 #   python-pyexiv2
 #   python-magic (may need to use file instead)
 
+import pyexiv2
+import sys
+import os
+import shutil
+import datetime
+
 
 def rename_photo_and_dump_exif(old_photo_filename):
   '''Extract info from the exif header to rename the file and move it'''
-
-  import pyexiv2
-  import sys
-  import os
-  import datetime
 
 
   # Extract the exif header.
@@ -66,6 +67,9 @@ def rename_photo_and_dump_exif(old_photo_filename):
                          a_photo_date.strftime('%Y-%m-%d-%H-%M-%S')
     new_photo_filename = new_photo_basename + new_photo_extension
     new_exif_filename = new_photo_filename + '.txt'
+
+    if not os.path.exists(an_album_location):
+      os.makedirs(an_album_location)
   except:
     sys.exit('Unable to build a valid filename for {}' \
       .format(old_photo_filename))
