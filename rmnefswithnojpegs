@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 for i in *.nef ; do
   if [ ! -e ${i/nef/jpg} ] ; then

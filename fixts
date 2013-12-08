@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 exiv2 adjust -v -a-4:00 ${file}
 #exiv2 adjust -v -a-5:00 ${file}
