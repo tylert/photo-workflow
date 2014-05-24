@@ -2,4 +2,5 @@
 
 exiv2 adjust -v -a-4:00 ${file}
 #exiv2 adjust -v -a-5:00 ${file}
-exiv2 rename -v -r'%Y%m%d-%H%M%S' ${file}
+
+exiv2 rename -v -r'%Y-%m-%d-%H-%M-%S' ${file}
