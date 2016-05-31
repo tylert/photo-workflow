@@ -4,15 +4,23 @@
 #   python-pyexiv2
 #   python-magic (may need to use file instead)
 
-import pyexiv2
-import sys
 import os
+import stat
+import sys
 import shutil
 import datetime
+import pyexiv2
 
 
 def rename_photo_and_dump_exif(old_photo_filename):
     '''Extract info from the exif header to rename the file and move it'''
+
+    # Remove dumb permissions.
+    try:
+        os.chmod(old_photo_filename,
+                  stat.S_IWUSR|stat.S_IRUSR|stat.S_IRGRP|stat.S_IROTH)
+    except:
+        sys.exit('Unable to chmod {}.'.format(old_photo_filename))
 
     # Extract the exif header.
     try:
