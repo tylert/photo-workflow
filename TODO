@@ -1,4 +1,3 @@
-Do better handling of exceptions rather than using sys.exit
 Improve the handling of renames if multiple shots land in the same second
 Wrap main rename function inside a class
 Add the logic to fix embedded thumbnail images
