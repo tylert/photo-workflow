@@ -32,8 +32,8 @@ def rename_photo_and_dump_exif(old_photo_filename):
     # Remove dumb permissions.
     try:
         os.chmod(old_photo_filename,
-                  stat.S_IWUSR|stat.S_IRUSR|stat.S_IRGRP|stat.S_IROTH)
-    except:
+                 stat.S_IWUSR | stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
+    except OSError:
         raise PermissionError('Unable to chmod {}.'.format(old_photo_filename))
 
     # Extract the exif header.
@@ -73,7 +73,7 @@ def rename_photo_and_dump_exif(old_photo_filename):
             # try:
             #     a_photo_date = datetime.datetime.fromtimestamp(
             #                    os.stat(old_photo_filename).st_ctime)
-            # except:
+            # except OSError:
             raise ExifError('Unable to find a valid timestamp in {}.'
                             .format(old_photo_filename))
 
@@ -88,7 +88,7 @@ def rename_photo_and_dump_exif(old_photo_filename):
 
         if not os.path.exists(an_album_location):
             os.makedirs(an_album_location)
-    except:
+    except OSError:
         raise PermissionError('Unable to build a valid filename for {}'
                               .format(old_photo_filename))
 
@@ -106,9 +106,11 @@ def rename_photo_and_dump_exif(old_photo_filename):
                 if not os.path.exists(new_photo_filename):
                     shutil.move(old_photo_filename, new_photo_filename)
                 else:
-                    raise PermissionError('Unable to rename {}'.format(old_photo_filename))
+                    raise PermissionError(
+                        'Unable to rename {}'.format(old_photo_filename))
     except:
-        raise PermissionError('Unable to move photo {}.'.format(old_photo_filename))
+        raise PermissionError(
+            'Unable to move photo {}.'.format(old_photo_filename))
 
     # Dump the exif fields.
     try:
@@ -118,7 +120,8 @@ def rename_photo_and_dump_exif(old_photo_filename):
                     an_exif_file.write('{} = {}\n'
                                        .format(key, metadata[key].human_value))
     except:
-        raise PermissionError('Unable to write exif dump {}.'.format(new_exif_filename))
+        raise PermissionError(
+            'Unable to write exif dump {}.'.format(new_exif_filename))
 
 
 if __name__ == '__main__':
