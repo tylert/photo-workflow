@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # debian packages used:
-#   python-pyexiv2
+#   python3-pyexiv2
 
 import os
 import stat
@@ -26,7 +26,7 @@ class ExifError(Error):
     pass
 
 
-def rename_photo_and_dump_exif(old_photo_filename):
+def main(old_photo_filename):
     '''Extract info from the exif header to rename the file and move it'''
 
     # Remove dumb permissions.
@@ -125,7 +125,7 @@ def rename_photo_and_dump_exif(old_photo_filename):
 
 
 if __name__ == '__main__':
-    rename_photo_and_dump_exif(sys.argv[1])
+    main(sys.argv[1])
 
 
 # nice -n5 ufraw-batch --out-type=jpeg --overwrite */*.nef
