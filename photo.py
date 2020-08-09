@@ -84,7 +84,7 @@ def main(old_photo_filename):
         new_photo_basename = an_album_location + os.sep + \
             a_photo_date.strftime('%Y-%m-%d-%H-%M-%S')
         new_photo_filename = new_photo_basename + new_photo_extension
-        new_exif_filename = new_photo_filename + '.txt'
+        # new_exif_filename = new_photo_filename + '.txt'
 
         if not os.path.exists(an_album_location):
             os.makedirs(an_album_location)
@@ -113,15 +113,15 @@ def main(old_photo_filename):
             'Unable to move photo {}.'.format(old_photo_filename))
 
     # Dump the exif fields.
-    try:
-        if not os.path.exists(new_exif_filename):
-            with open(new_exif_filename, 'wt') as an_exif_file:
-                for key in sorted(metadata.exif_keys):
-                    an_exif_file.write('{} = {}\n'
-                                       .format(key, metadata[key].human_value))
-    except:
-        raise PermissionError(
-            'Unable to write exif dump {}.'.format(new_exif_filename))
+    # try:
+    #     if not os.path.exists(new_exif_filename):
+    #         with open(new_exif_filename, 'wt') as an_exif_file:
+    #             for key in sorted(metadata.exif_keys):
+    #                 an_exif_file.write('{} = {}\n'
+    #                                    .format(key, metadata[key].human_value))
+    # except:
+    #     raise PermissionError(
+    #         'Unable to write exif dump {}.'.format(new_exif_filename))
 
 
 if __name__ == '__main__':
