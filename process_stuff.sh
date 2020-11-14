@@ -10,5 +10,7 @@ rename 's/VID_(\d\d\d\d)(\d\d)(\d\d)_(\d\d)(\d\d)(\d\d)/$1-$2-$3-$4-$5-$6/g' *.m
 
 # Create directory structure and move stuff under it
 # (e.g.:  "2020/2020-12-25/2020-12-25-12-34-56.jpg")
-mkdir -p ${photo:0:4}/${photo:0:10}
-mv -v ${photo} ${photo:0:4}/${photo:0:10}
+for photo in *.jpg; do
+    mkdir --parents ${photo:0:4}/${photo:0:10}
+    mv --verbose ${photo} ${photo:0:4}/${photo:0:10}
+done
