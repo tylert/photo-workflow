@@ -1,5 +1,0 @@
-Improve the handling of renames if multiple shots land in the same second
-Wrap main rename function inside a class
-Add the logic to fix embedded thumbnail images
-Try to verify if it can process Canon raw files properly
-rename 's/^VID_(\d\d\d\d)(\d\d)(\d\d)_(\d\d)(\d\d)(\d\d)/$1-$2-$3-$4-$5-$6/' *.mp4
