@@ -10,6 +10,6 @@ jhead -exonly -n%Y-%m-%d-%H-%M-%S *.jpg
 # Create directory structure and move stuff under it
 # (e.g.:  "2020/2020-12-25/2020-12-25-12-34-56.jpg")
 for photo in *.jpg; do
-    mkdir -p ${photo:0:4}/${photo:0:10}
-    mv -v ${photo} ${photo:0:4}/${photo:0:10}
+    mkdir -pv ${photo:0:4}/${photo:0:10}
+    mv -iv ${photo} ${photo:0:4}/${photo:0:10}
 done
