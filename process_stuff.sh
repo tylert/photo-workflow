@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 
+# Tools required:  bash, coreutils (chmod, mkdir, mv), findutils (find, xargs), jhead
+
 # Fix permissions
 find . -type d -print0 | xargs -0 chmod 0755
 find . -type f -print0 | xargs -0 chmod 0644
 
 # Fix filenames
 jhead -autorot -exonly -n%Y-%m-%d-%H-%M-%S *.jpg
+# XXX FIXME TODO  This still does silly stuff if the exif header is missing  (Run 'jhead -mkexif')
 
 # Create directory structure and move stuff under it
 # (e.g.:  "2020/2020-12-25/2020-12-25-12-34-56.jpg")
